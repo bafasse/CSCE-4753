@@ -1,7 +1,7 @@
 import socket
 
 def menu():
-    print("**********Welcome to XYZ ATM********")
+    print("**********Welcome to ATM********")
     print("Press 1 for Deposit.")
     print("Press 2 for Withdrawal")
     print("Press 3 for Account Balance")
@@ -19,20 +19,11 @@ while True:
     msg = str.encode(str(userchoice), 'utf-8')
     s.send(msg)
     print(s.recv(1024))
-    userchoice = input()
-    msg = str.encode(str(userchoice), 'utf-8')
-    s.send(msg)
-    print(s.recv(1024))
+    if userchoice == '1' or userchoice == '2':
+        userchoice = input()
+        msg = str.encode(str(userchoice), 'utf-8')
+        s.send(msg)
+        print(s.recv(1024))
+    elif userchoice == '4':
+        exit()
 s.close
-
-# s = socket.socket()          
-  
-# port = 12345                
-  
-# temp =  0
-# while temp < 5:
-#     s.connect(('127.0.0.1', port)) 
-#     print (s.recv(1024) )
-#     temp = temp + 1
-       
-# s.close()

@@ -14,15 +14,20 @@ class Server():
         conn.send(data.encode())
 
     def withdrawal (self, amount, conn):
-        self.account_balance -= amount
-        self.withdrawal_amount += amount
-        print("Withdrawal was $%.2f, current balance is $%.2f" % (amount, self.account_balance))
-        data = "Withdrawal was $%.2f, current balance is $%.2f" % (amount, self.account_balance)
-        conn.send(data.encode())
+        if self.account_balance >= amount:
+            self.account_balance -= amount
+            self.withdrawal_amount += amount
+            print("Withdrawal was $%.2f, current balance is $%.2f" % (amount, self.account_balance))
+            data = "Withdrawal was $%.2f, current balance is $%.2f" % (amount, self.account_balance)
+            conn.send(data.encode())
+        elif self.account_balance < amount:
+            print("You cannot withdraw more money than is in the account")
+            data = "You cannot withdraw more money than is in the account"
+            conn.send(data.encode())
 
     def print (self, conn):
-        print("Your current balance: $%.2f" % self.account_balance)
-        data = "Your current balance: $%.2f" % self.account_balance
+        print("Your current balance: $%.2f" % (self.account_balance))
+        data = "Your current balance: $%.2f" % (self.account_balance)
         conn.send(data.encode())
 
 def main():
@@ -38,7 +43,8 @@ def main():
     while True:
         userchoice = c.recv(1024).decode()
         if userchoice == '1':
-            c.send("How much would you like to deposit today?".encode())
+            deposit = "How much would you like to deposit today?"
+            c.send(deposit.encode())
             amount = float(c.recv(1024).decode())
             account.deposit(amount, c)
         elif userchoice == '2':
@@ -49,29 +55,10 @@ def main():
             account.print(c)
         elif userchoice == '4':
             c.send("Thank You for banking with us!".encode())
-            sys.exit(1)
+            # c.sys.exit()
+            sys.exit()
         else:
             print("Wrong Choice!")
             c.send("Wrong Choice!".encode())
     c.close()
 main()
-
-
-
-
-# s = socket.socket()		 
-# print ("Socket successfully created")
-
-# port = 12345				
-
-# s.bind(('', port))		 
-# print ("socket binded to %s" %(port) )
-# s.listen(5)	 
-# print ("socket is listening")
-
-# while True: 
-#     c, addr = s.accept()	 
-#     print ('Got connection from', addr )
-
-# c.send('Thank you for connecting') 
-# c.close() 
