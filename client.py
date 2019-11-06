@@ -18,12 +18,12 @@ while True:
     userchoice = input()
     msg = str.encode(str(userchoice), 'utf-8')
     s.send(msg)
-    print(s.recv(1024))
+    print(s.recv(1024).decode())
     if userchoice == '1' or userchoice == '2':
         userchoice = input()
         msg = str.encode(str(userchoice), 'utf-8')
         s.send(msg)
-        print(s.recv(1024))
+        print(s.recv(1024).decode())
     elif userchoice == '4':
         exit()
 s.close
